@@ -5,7 +5,7 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Kopieer de src map naar /app
-COPY src/
+COPY src/ Firewall.py
 
 # Kopieer requirements
 COPY requirements.txt /app/
