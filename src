@@ -1,6 +1,6 @@
 from flask import Flask, request, abort
 
-app = Flask(__name__)
+app = Flask(__Firewall.py__)
 
 # List of allowed paths
 ALLOWED_PATHS = [
