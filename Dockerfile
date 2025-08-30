@@ -1,11 +1,11 @@
-# Gebruik een lichte Python 3.11 image
+# Gebruik officiële Python-slim image
 FROM python:3.11-slim
 
-# Stel werkdirectory in
+# Zet werkdirectory
 WORKDIR /app
 
-# Kopieer de src map naar /app
-COPY  src/ app
+# Kopieer de src-map naar /app
+COPY src/ /app
 
 # Kopieer requirements
 COPY requirements.txt /app/
@@ -16,5 +16,9 @@ RUN python -m pip install --upgrade pip
 # Installeer dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Start het firewall script
-CMD ["python", "src"]
+# Toon de inhoud van /app voor debugging (optioneel, verwijder later)
+# CMD ["ls", "-R", "/app"]
+
+# Start je applicatie
+# Pas hier het pad naar firewall.py aan als het in een submap staat
+CMD ["python", "firewall.py"]
