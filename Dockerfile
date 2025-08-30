@@ -14,4 +14,4 @@ COPY src/ ./src
 COPY Firewall.py .
 
 # Stel het commando in om Firewall.py te draaien
-CMD ["python", "Firewall.py"]
+CMD ["python", "firewall.py"]
