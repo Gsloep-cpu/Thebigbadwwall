@@ -11,7 +11,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Kopieer de src map en Firewall.py naar de container
 COPY src/ ./src
-COPY Firewall.py .
+COPY firewall.py .
 
 # Stel het commando in om Firewall.py te draaien
 CMD ["python", "firewall.py"]
