@@ -5,7 +5,7 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Kopieer de src-map naar /app
-COPY src/ /app
+COPY src/ app
 
 # Kopieer requirements
 COPY requirements.txt /app/
