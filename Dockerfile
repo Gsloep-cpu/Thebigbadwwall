@@ -17,4 +17,4 @@ RUN python -m pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Start het firewall script
-CMD ["python", "src"]
+CMD ["python", "Firewall.py"]
