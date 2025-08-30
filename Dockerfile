@@ -1,19 +1,20 @@
-# Base image
+# Gebruik een lichte Python 3.11 image
 FROM python:3.11-slim
 
-# Set working directory
+# Stel werkdirectory in
 WORKDIR /app
 
-# Copy src folder naar werkdirectory
+# Kopieer de src map naar /app
 COPY src/ /app
 
-# Copy requirements en install dependencies
+# Kopieer requirements
 COPY requirements.txt /app/
+
+# Upgrade pip
 RUN python -m pip install --upgrade pip
+
+# Installeer dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose poort voor firewall
-EXPOSE 80
-
-# Start de firewall
+# Start het firewall script
 CMD ["python", "firewall.py"]
