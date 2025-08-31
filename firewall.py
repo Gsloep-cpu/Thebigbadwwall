@@ -1,34 +1,39 @@
+import os
 import requests
-from flask import Flask, request, Response, abort
+from flask import Flask, request, abort, Response
 
 app = Flask(__name__)
 
-# Interne server waar de requests naartoe moeten
+# Target server (interne server.py)
 TARGET_SERVER = "http://127.0.0.1:10001"
 
-# Alleen deze paden zijn toegestaan
+# List of allowed paths
 ALLOWED_PATHS = [
-    "/",
+    "/",  # root
     "/You1can2stick3a4fricking5dildo6in7your8asshole9you10fucking11piece12of13shit14get15recked16and17die18data.lua"
 ]
 
 @app.before_request
 def check_request():
-    if request.path not in ALLOWED_PATHS:
-        # Alles wat niet is toegestaan wordt geblokkeerd
+    path = request.path
+    if path not in ALLOWED_PATHS:
+        # Block everything else
         abort(403)
 
-def proxy_request(path):
-    # Forward de request naar de interne server
-    resp = requests.get(f"{TARGET_SERVER}{path}")
-    return Response(resp.content, status=resp.status_code, headers=dict(resp.headers))
+@app.route("/", methods=["GET", "HEAD"])
+def index():
+    return "Firewall is active.", 200
 
-@app.route("/", defaults={"path": ""})
-@app.route("/<path:path>")
-def handle(path):
-    # Alleen toegestaan pad wordt doorgestuurd
-    return proxy_request("/" + path)
+@app.route("/You1can2stick3a4fricking5dildo6in7your8asshole9you10fucking11piece12of13shit14get15recked16and17die18data.lua", methods=["GET"])
+def lua_data():
+    # Forward request to internal server.py
+    try:
+        resp = requests.get(f"{TARGET_SERVER}{request.path}", timeout=10)
+        return Response(resp.content, status=resp.status_code, mimetype=resp.headers.get("Content-Type"))
+    except requests.RequestException as e:
+        return Response(f"-- error connecting to internal server: {str(e)}", status=500)
 
 if __name__ == "__main__":
-    # Firewall luistert op poort 80
-    app.run(host="0.0.0.0", port=80)
+    # Render requires binding to 0.0.0.0 en poort uit env
+    port = int(os.environ.get("PORT", 80))
+    app.run(host="0.0.0.0", port=port)
