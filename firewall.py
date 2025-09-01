@@ -15,9 +15,12 @@ ALLOWED_PATHS = [
 
 @app.before_request
 def check_request():
-    path = request.path
-    if path not in ALLOWED_PATHS:
-        # Block everything else
+    # Normaliseer path: verwijder trailing slash
+    path = request.path.rstrip("/")
+    allowed = [p.rstrip("/") for p in ALLOWED_PATHS]
+
+    if path not in allowed:
+        # Block alles wat niet expliciet toegestaan is
         abort(403)
 
 @app.route("/", methods=["GET", "HEAD"])
