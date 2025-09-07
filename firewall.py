@@ -19,6 +19,10 @@ def check_request():
     path = request.path.rstrip("/")
     allowed = [p.rstrip("/") for p in ALLOWED_PATHS]
 
+    # Ping-route mag altijd
+    if path == "/ping":
+        return
+
     if path not in allowed:
         # Block alles wat niet expliciet toegestaan is
         abort(403)
@@ -36,7 +40,11 @@ def lua_data():
     except requests.RequestException as e:
         return Response(f"-- error connecting to internal server: {str(e)}", status=500)
 
+@app.route("/ping", methods=["GET"])
+def ping():
+    # Simpel antwoord om de server wakker te houden
+    return "pong", 200
+
 if __name__ == "__main__":
-    # Render requires binding to 0.0.0.0 en poort uit env
     port = int(os.environ.get("PORT", 80))
     app.run(host="0.0.0.0", port=port)
